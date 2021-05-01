@@ -17,7 +17,7 @@ NREP=3
 BINARY="python ./julia_par.py"
 
 
-OUTFILE="output_exp_q3.dat"
+OUTFILE="output_exp_q4.dat"
 
 # remove old output data
 echo -n "" > "${OUTFILE}"
