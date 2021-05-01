@@ -1,0 +1,43 @@
+bopc20s18@hydra:~$ history 
+    1  ls
+    2  who
+    3  exit
+    4  ls
+    5  who
+    6  ls
+    7  sinfo
+    8  python julia_par.py 
+    9  srun -N 1 -p q_student -t 1 python julia_par.py 
+   10  squeue 
+   11  srun -N 1 -p q_student -t 1 python julia_par.py &
+   12  squeue 
+   13  sbatch run_experiment_q2.sh 
+   14  squeue 
+   15  cat output_exp_q2.dat 
+   16  squeue 
+   17  cat run_experiment_q2.sh 
+   18  squeue 
+   19  cat output_exp_q2.dat 
+   20  sbatch run_experiment_q3.sh 
+   21  squeue 
+   22  cat output_exp_q3.dat 
+   23  cat run_experiment_q3.sh 
+   24  cat output_exp_q3.dat 
+   25  squeue 
+   26  sbatch run_experiment_q4.sh 
+   27  squeue 
+   28  cat output_exp_q4.dat 
+   29  cat run_experiment_q4.sh 
+   30  vim run_experiment_q4.sh 
+   31  squeue 
+   32  cat output_exp_q3.dat 
+   33  squeue 
+   34  rm output_exp_q3.dat 
+   35  sbatch run_experiment_q3.sh 
+   36  sbatch run_experiment_q4.sh 
+   37  squeue 
+   38  ls
+   39  squeue 
+   40  ls
+   41  history 
+
