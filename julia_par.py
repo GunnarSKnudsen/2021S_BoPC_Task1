@@ -29,22 +29,20 @@ def compute_julia_set_sequential(x_min, x_max, y_min, y_max, im_width, im_height
             ratio = nit / nit_max
             julia[ix, iy] = ratio
 
-    # GSK added: Save partial results to file as well - OFC remove for final test:
-    #import matplotlib.pyplot as plt
-    #fig, ax = plt.subplots()
-    #ax.imshow(julia, interpolation='nearest', cmap=plt.get_cmap("hot"))
-    #plt.savefig("Parallel_x" + str(y_max) + "y" + str(x_max) + ".png")
-
     return julia
 
 
 def compute_julia_in_parallel(size, x_min, x_max, y_min, y_max, patch, n_procs):
-    # Assuming equal division - Do ceil on other stuff if not . or floor.
-    # whatever is correct. Want to make possible unequal chunk size
     # Define ranges that will be run in parallel
     number_of_iterations = ceil(size / patch)
-    # Hacky fix to ensure sizes match:
+
+    size_orig = size
     size = number_of_iterations * patch
+    ratio = size/size_orig
+    x_max = x_min + ratio * (x_max-x_min)
+    y_max = y_min + ratio * (y_max-y_min)
+
+
     x_range = x_max - x_min
     y_range = y_max - y_min
     x_step = x_range / number_of_iterations
@@ -60,7 +58,6 @@ def compute_julia_in_parallel(size, x_min, x_max, y_min, y_max, patch, n_procs):
     for x_id in range(0, number_of_iterations, 1):
         for y_id in range(0, number_of_iterations, 1):
             # Calculate parameters and metadata
-            size_parallel = int(size / number_of_iterations)
             x_min_parallel = x_min + (x_id + 0) * x_step
             x_max_parallel = x_min + (x_id + 1) * x_step
             y_min_parallel = y_min + (y_id + 0) * y_step
@@ -71,10 +68,10 @@ def compute_julia_in_parallel(size, x_min, x_max, y_min, y_max, patch, n_procs):
                                                                 , x_max_parallel
                                                                 , y_min_parallel
                                                                 , y_max_parallel
-                                                                , size_parallel
-                                                                , size_parallel
+                                                                , patch
+                                                                , patch
                                                                 )
-            )
+                                 )
             # And append to the pool
             task_handles.append(t)
 
@@ -93,9 +90,11 @@ def compute_julia_in_parallel(size, x_min, x_max, y_min, y_max, patch, n_procs):
     (n, n_rows, n_cols) = results.shape
     h = size
     w = size
+
     julia_img = results.reshape(h // n_rows, -1, n_rows, n_cols).swapaxes(1, 2).reshape(h, w)
 
-    return julia_img
+    julia_img_cut = julia_img[:size_orig, :size_orig]
+    return julia_img_cut
 
 
 if __name__ == "__main__":
