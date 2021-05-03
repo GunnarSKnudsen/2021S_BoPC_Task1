@@ -3,11 +3,11 @@ library(kableExtra)
 
 # Settings
 options(digits=16)
-setwd("~/tuWien/2021S_191114_Basics_of_parallel_Computing/assignments/assignment1/bopc-julia-python_20210420/julia_set/serverOutput")
-
+#setwd("~/tuWien/2021S_191114_Basics_of_parallel_Computing/assignments/assignment1/bopc-julia-python_20210420/julia_set/serverOutput")
+setwd("C:/Users/Tom/Documents/GitHub/2021S_BoPC_Task1/serverOutput")
 #Helper 
 latexTable <- function(iDf, iTitle) {
-    kbl(iDf, booktabs = TRUE, caption = iTitle) %>%
+    kbl(iDf, booktabs = TRUE, caption = iTitle, format = "latex") %>%
         kable_styling(latex_options = c("striped"
                                         , "HOLD_position"
                                         #, "scale_down"
@@ -26,11 +26,13 @@ output_q2 <- read.csv2("output_exp_q2.dat"
 
 output_q3 <- read.csv2("output_exp_q3.dat"
                        , header = FALSE
+                       , dec = "."
                        , col.names = c("size","patch","nprocs","time")
                        , colClasses = c("numeric", "numeric", "numeric", "numeric")
             )
 output_q4 <- read.csv2("output_exp_q4.dat"
                        , header = FALSE
+                       , dec = "."
                        , col.names = c("size","patch","nprocs","time")
                        , colClasses = c("numeric", "numeric", "numeric", "numeric")
             )
@@ -42,7 +44,6 @@ output_q2_agg <- output_q2 %>%
 
 
 # Compute Speedup
-### FUUUCK THIS IS BADLY CODED _ REFACOTR!
 su200 = output_q2_agg[output_q2_agg$size == 200 & output_q2_agg$nprocs==1,]$meanVal / 
     output_q2_agg[output_q2_agg$size == 200,]$meanVal
 
@@ -54,8 +55,9 @@ output_q2_agg$su = su
 output_q2_agg$parEff = output_q2_agg$su / output_q2_agg$nprocs
 
 ### AAAARGH! Why you no print?
-(res <- output_q2_agg%>% latexTable("Best solutions for both methods"))
+res <- output_q2_agg %>% round(2) %>% latexTable("Best solutions for both methods")
 # And even worse? AS HTML?
+print(res)
 dput(res)
 
 # Table Res:
